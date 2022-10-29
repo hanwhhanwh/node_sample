@@ -1,0 +1,17 @@
+{
+  "name": "my.superbin",
+  "version": "1.0.0",
+  "description": "Superbin my page",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "superbin"
+  ],
+  "author": "hbesthee@naver.com",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

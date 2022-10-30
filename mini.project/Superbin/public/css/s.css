@@ -1,0 +1,11 @@
+@media all and(max-width: 960px){
+	table{
+		font-size: xx-large;
+    }
+}
+
+@media all and(max-width: 480px){
+	table{
+		font-size: xx-large;
+    }
+}

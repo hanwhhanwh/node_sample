@@ -5,11 +5,13 @@
  */
 
 // import express from 'express';
+let cors = require('cors')
 let express = require('express')
 let request = require('request')
 let fs = require('fs')
 
 let app = express()
+app.use(cors())
 // let port = app.listen(process.env.PORT || 35000);
 let port = 35000;
 
@@ -89,6 +91,25 @@ app.get('/', async function(req, res) {
 	};
 	res.send(`<html><head><meta charset="utf-8"><link href="/css/s.css" rel="stylesheet"></head><body><h1>수퍼빈 현황</h1>\n<table style="font-size: xxx-large;"border=1>\n${device_list_html}</table></body></htlm>`);
 })
+
+
+app.get('/youtube_dl', async function(req, res) {
+	// let parsedUrl = url.parse(req.url);
+	// console.log(parsedUrl);
+	result = null
+	let video_id = req.query.video_id
+	if (video_id == undefined)
+	{
+		result = `{ "resultCode":400, "resultMsg":"Bad parameter : video_id" }`
+	}
+	res.writeHead(200, {'Content-Type':'application/json'});
+	if (result == null)
+	{
+		result = `{ "resultCode":200, "resultMsg":"Success", "resultData":{"clip_no":12, "clip_id":"${video_id}", "reg_date":"2022-12-27 20:42:41"} }`
+	}
+	res.end(result)
+})
+
 
 app.use(express.static('public'))
 

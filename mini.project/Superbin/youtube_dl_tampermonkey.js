@@ -50,32 +50,38 @@
 		o.className = "style-scope ytd-masthead";
 		o.setAttribute("type", "button");
 		o.setAttribute("title", "Download video");
-		o.setAttribute("style", "backgroundColor='#ff003e';");
+		o.setAttribute("style", "backgroundColor:#ff003e;");
 		o.innerHTML = "DL"
 		o.addEventListener("click", function (o) {
-			console.log('Download youtube video : ');
-			let strURL = `http://localhost:35000/youtube_dl?video_id=${video_id}`;
-			let options = {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json; charset=utf-8'
-					, 'dataType': 'json'
-					// , 'credentials': 'same-origin'
-				}
-			}
-	
-			fetch(strURL, options)
-				.then(res => res.json())
-				.then(res => {
-					if (res.resultCode == 200) {
-						console.log(`${video_id}: added download queue.`)
-						alert(`${video_id}: added download queue.`)
+			let v_id = window.document.location.toString().split('/watch?v=')[1];
+			v_id = v_id.split('&')[0]
+
+			if (v_id)
+			{
+				console.log(`Download youtube video : ${v_id}`);
+				let strURL = `http://localhost:35000/youtube_dl?video_id=${v_id}`;
+				let options = {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json; charset=utf-8'
+						, 'dataType': 'json'
+						// , 'credentials': 'same-origin'
 					}
-				})
-				.catch(err => {
-					console.log(`${video_id} download error`)
-					console.log(err)
-				})
+				}
+		
+				fetch(strURL, options)
+					.then(res => res.json())
+					.then(res => {
+						if (res.resultCode == 200) {
+							console.log(`${v_id}: added download queue.`)
+							alert(`${v_id}: added download queue.`)
+						}
+					})
+					.catch(err => {
+						console.log(`${v_id} download error`)
+						console.log(err)
+					})
+			}
 		}, !0);
 		// o.setAttribute("style", "min-height:25px; position:relative; top:1px; cursor: pointer; font: 13px Arial; background: #ff003e; color: #fff; text-transform: uppercase; display: block; padding: 10px 16px; margin: 20px 5px 10px 5px; border: 1px solid #ff0068; border-radius: 2px; font-weight:bold");
 		o.setAttribute("onmouseover", "this.style.backgroundColor='#c10841'");
@@ -110,4 +116,10 @@
 		console.log("Error youtube download: ", o);
 	}
 	console.log(div);
+
+	window.addEventListener('hashchange', function() {
+
+		alert(`Hash Changed : ${window.location.href}`);
+	
+	});
 })();

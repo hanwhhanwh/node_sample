@@ -12,7 +12,7 @@
 // @author       hbesthee@naver.com
 // @match        https://www.youtube.com/watch?*
 // @icon         https://www.youtube.com/favicons?domain=tampermonkey.net
-// @run-at       document-end
+// @run-at       document-idle
 // @grant        GM_listValues
 // @grant        GM_setValue
 // @grant        GM_getValue

@@ -1,0 +1,8 @@
+module.exports = {
+	DB_HOST: '192.168.0.1'
+	, DB_PORT: 23306
+	, DB_USER: 'youtubeuser'
+	, DB_PASSWORD: '@!youtube~user'
+	, DB_NAME: 'YOUTUBE'
+	, CONNECTION_LIMIT: 10
+}

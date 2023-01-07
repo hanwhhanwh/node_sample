@@ -5,11 +5,19 @@
  */
 
 // import express from 'express';
+let cors = require('cors')
 let express = require('express')
 let request = require('request')
 let fs = require('fs')
 
+
+let youtube_db = require('./lib/db/youtube_db')
+
+
 let app = express()
+app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }));
 // let port = app.listen(process.env.PORT || 35000);
 let port = 35000;
 
@@ -42,6 +50,7 @@ function fetch_device_status(device_id)
 		});	
 	});
 }
+
 
 app.get('/', async function(req, res) {
 	let device_list = fs.readFileSync(process.cwd() + '/device_list.txt').toString().split(',');
@@ -90,7 +99,56 @@ app.get('/', async function(req, res) {
 	res.send(`<html><head><meta charset="utf-8"><link href="/css/s.css" rel="stylesheet"></head><body><h1>수퍼빈 현황</h1>\n<table style="font-size: xxx-large;"border=1>\n${device_list_html}</table></body></htlm>`);
 })
 
+
+// Youtube DB API - GET ; 유튜브 영상 정보를 요청합니다.
+app.get('/youtube_dl', async function(req, res) {
+	// let parsedUrl = url.parse(req.url);
+	// console.log(parsedUrl);
+	result = null
+	console.log(req.query)
+	let video_id = req.query.video_id
+	if (video_id == undefined)
+	{
+		result = `{ "resultCode":400, "resultMsg":"Bad parameter : video_id" }`
+		res.json(result)
+		return
+	}
+
+	if (result == null)
+	{
+		result = await youtube_db.getYoutubeClipInfo(video_id)
+		// console.log(result)
+		res.json(result)
+	}
+})
+
+
+// Youtube DB API - POST ; 유튜브 다운로드 정보를 입력합니다.
+app.post('/youtube_dl', async function(req, res) {
+	// let parsedUrl = url.parse(req.url);
+	// console.log(parsedUrl);
+	result = null
+
+	youtube_info = req.body
+	if (!youtube_info.clip_id)
+	{
+		result = `{ "resultCode":400, "resultMsg":"Bad parameter : youtube infomation (body)" }`
+		res.json(result)
+		return
+	}
+
+	if (result == null)
+	{
+		result = await youtube_db.insertYoutubeClipInfo(youtube_info)
+		// console.log(result)
+		res.json(result)
+	}
+})
+
+
+// add static folder : ./public 
 app.use(express.static('public'))
+
 
 // express start
 app.listen(port, function() {

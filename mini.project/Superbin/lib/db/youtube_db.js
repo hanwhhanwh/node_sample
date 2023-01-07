@@ -35,7 +35,7 @@ WHERE 1 = 1
 		if (rows[0])
 			return { resultCode: 200, resultMsg: `success`, resultData: rows[0] };
 		else
-			return { resultCode: 404, resultMsg: `not found` };
+			return { resultCode: 404, resultMsg: `not found` }; // 다운로드 이력 없음
 	}
 	catch(err){
 		return { resultCode: 500, resultMsg: `query exection error: ${err}` };
@@ -46,6 +46,45 @@ WHERE 1 = 1
 	}
 }
 
+
+/**
+ * video_id에 해당하는 Youtube CLIP 정보를 저장하고 그 처리 결과를 반환합니다.
+ * @param {json} youtube_info Youtube CLIP의 정보가 담겨 있는 객체
+ * @returns 정보의 저장 성공 여부
+ */
+async function insertYoutubeClipInfo(youtube_info){
+	let conn, rows;
+	try{
+		conn = await pool.getConnection();
+		strInsertQuery = `
+INSERT INTO CLIP
+(
+	member_no, clip_id, channel_id, author, title
+	, length, publish_date, thumbnail_url, description
+)
+VALUES
+(
+	?, ?, ?, ?, ?
+	, ?, ?, ?, ?
+)
+;`
+		values = [1, youtube_info.clip_id, youtube_info.channel_id, youtube_info.author, youtube_info.title
+			, youtube_info.length, youtube_info.publish_date, youtube_info.thumbnail_url, youtube_info.description]
+		rows = await conn.query(strInsertQuery, values);
+		return { resultCode: 200, resultMsg: `success`, resultData: rows[0] };
+	}
+	catch(err){
+		return { resultCode: 500, resultMsg: `query exection error: ${err}` };
+	}
+	finally {
+		if (conn)
+			conn.end();
+	}
+}
+
+
 module.exports = {
-	getYoutubeClipInfo: getYoutubeClipInfo
+	version: 2
+	, getYoutubeClipInfo: getYoutubeClipInfo
+	, insertYoutubeClipInfo: insertYoutubeClipInfo
 }

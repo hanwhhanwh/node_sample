@@ -16,6 +16,8 @@ let youtube_db = require('./lib/db/youtube_db')
 
 let app = express()
 app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }));
 // let port = app.listen(process.env.PORT || 35000);
 let port = 35000;
 
@@ -98,7 +100,7 @@ app.get('/', async function(req, res) {
 })
 
 
-// Youtube DB API
+// Youtube DB API - GET ; 유튜브 영상 정보를 요청합니다.
 app.get('/youtube_dl', async function(req, res) {
 	// let parsedUrl = url.parse(req.url);
 	// console.log(parsedUrl);
@@ -109,11 +111,35 @@ app.get('/youtube_dl', async function(req, res) {
 	{
 		result = `{ "resultCode":400, "resultMsg":"Bad parameter : video_id" }`
 		res.json(result)
+		return
 	}
 
 	if (result == null)
 	{
 		result = await youtube_db.getYoutubeClipInfo(video_id)
+		// console.log(result)
+		res.json(result)
+	}
+})
+
+
+// Youtube DB API - POST ; 유튜브 다운로드 정보를 입력합니다.
+app.post('/youtube_dl', async function(req, res) {
+	// let parsedUrl = url.parse(req.url);
+	// console.log(parsedUrl);
+	result = null
+
+	youtube_info = req.body
+	if (!youtube_info.clip_id)
+	{
+		result = `{ "resultCode":400, "resultMsg":"Bad parameter : youtube infomation (body)" }`
+		res.json(result)
+		return
+	}
+
+	if (result == null)
+	{
+		result = await youtube_db.insertYoutubeClipInfo(youtube_info)
 		// console.log(result)
 		res.json(result)
 	}

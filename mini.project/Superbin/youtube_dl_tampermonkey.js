@@ -52,7 +52,7 @@
 		fetch(strDownloadURL, options)
 			.then(res => res.json())
 			.then(res => {
-				if (res.resuleCode == 200)
+				if (res.resultCode == 200)
 				{
 					console.log(`YOUTUBE_DL download complete: ${video_id}`)
 				}
@@ -62,7 +62,7 @@
 				}
 			})
 			.catch(err => {
-				console.log(`download_youtube_clip: ${v_id} download error`)
+				console.log(`download_youtube_clip: ${video_id} download error`)
 				console.log(err)
 			})
 	}
@@ -83,21 +83,23 @@
 					method: 'GET',
 					headers: { 'Content-Type': 'application/json; charset=utf-8' }
 				}
-	
+
 			fetch(strURL, options)
 				.then(res => res.json())
 				.then(res => {
 					let force_download = 'n'
 					if (res.resultCode == 200)
 					{
-						ret = confirm(`${v_id}: already downloaded '${1}'\nDo you want to re-download?`)
+						let ret = confirm(`${v_id}: already downloaded '${1}'\nDo you want to re-download?`)
 						if (ret)
 						{
 							// Re-download same youtube clip
 							force_download = 'y'
 						}
 						else
+						{
 							return // end
+						}
 					}
 					if ( (res.resultCode == 404) || (force_download == 'y') ) // not exist download-log => new clip
 					{
@@ -115,7 +117,9 @@
 				})
 		}
 		else
+		{
 			console.log(`Error(dl_button_handler): video_id not found`)
+		}
 	}
 
 	// 유튜브 다운로드 버튼 생성하여 삽입 처리
@@ -156,9 +160,9 @@
 	try
 	{
 		if (center_div)
-			insert_dl_button()
+			{ insert_dl_button() }
 		else
-			setTimeout(insert_dl_button, 2000)
+			{ setTimeout(insert_dl_button, 2000) }
 
 		let video_id = window.document.location.toString().split('/watch?v=')[1];
 		video_id = video_id.split('&')[0]

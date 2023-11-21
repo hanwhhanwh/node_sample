@@ -26,7 +26,15 @@ function fetch_device_status(device_id)
 	return new Promise((resolve, reject) =>
 	{
 		let options = {
-			headers: {'Content-Type': 'application/json'},
+			headers: {'Content-Type': 'application/json'
+				, 'User-Agent': 'Mozilla/5.0 (Linux; Android 12; M2012K11AG Build/SKQ1.211006.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/106.0.5249.126 Mobile Safari/537.36 Superbin-Mobile'
+				, 'Origin': 'http://userapp.superbin.co.kr'
+				, 'Referer': 'http://userapp.superbin.co.kr/'
+				, 'X-Client-Build': '101'
+				, 'X-Client-Version': '0.1.1'
+				, 'X-Requested-With': 'com.superbin'
+				, 'x-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoYW53aCIsInVzZXJfc25vIjoiMTkwOTE3IiwiZXhwIjoxNjY3NjIzNjI3LCJpYXQiOjE2NTk4NDc2Mjd9.Iuu7LpNMg0S4cStKLiCIRg0O8VOnHGidmh6h7oipcUx340BNpvlbG4c_M3z5pCdyGjXfyQa-JdW0iAOdnLOq3A'
+			},
 			url: `http://deviceapi.superbin.co.kr/device/${device_id}/status`,
 			body: null
 		};

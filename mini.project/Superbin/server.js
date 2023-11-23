@@ -3,12 +3,14 @@
  * make	hbesthee@naver.com
  * date	2022-10-29
  */
+'use strict'
 
 // import express from 'express';
 let cors = require('cors')
-let express = require('express')
+const express =  require('express')
 let request = require('request')
 let fs = require('fs')
+const { engine } = require('express-handlebars')
 
 
 let youtube_db = require('./lib/db/youtube_db')
@@ -18,6 +20,9 @@ let app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
+app.engine('handlebars', engine({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+app.set('views', './views');
 // let port = app.listen(process.env.PORT || 35000);
 let port = 35000;
 
@@ -59,8 +64,15 @@ function fetch_device_status(device_id)
 	});
 }
 
+app.route('/')
+    .get(function (req, res) {
+        res.render('home', {
+            device_list_str: "NCAG2106006,NCAE1906014,NCAG2003019,NCAG2106001,SNBC2205006,SNBP2205007,SNBC2107006,SNBP2107008,SNBP2107009,SNBP2107010"
+        });
+    });
 
-app.get('/', async function(req, res) {
+
+app.get('/old', async function(req, res) {
 	let device_list = fs.readFileSync(process.cwd() + '/device_list.txt').toString().split(',');
 	let device_status_list = {};
 	let device_list_html = '<tr><th>위치</th><th>수량</th><th>상태</th><th>마지막 갱신일</th></tr>\n';

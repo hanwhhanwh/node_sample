@@ -66,8 +66,8 @@ function fetch_device_status(device_id)
 
 app.route('/')
     .get(function (req, res) {
-        res.render('home', {
-            device_list_str: "NCAG2106006,NCAE1906014,NCAG2003019,NCAG2106001,SNBC2205006,SNBP2205007,SNBC2107006,SNBP2107008,SNBP2107009,SNBP2107010"
+        res.render('status', {
+            device_list_str: "SNBP2107009"
         });
     });
 

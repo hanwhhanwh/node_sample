@@ -10,7 +10,7 @@
 */
 async function fetch_device_status(device_id)
 {
-	let url = `http://deviceapi.superbin.co.kr/device/${device_id}/status`
+	let url = `https://deviceapi.superbin.co.kr/device/${device_id}/status`
 	let res = await fetch(url)
 
 	device_status = await res.json()
@@ -53,7 +53,7 @@ async function fetch_device_status(device_id)
  */
 async function get_superbin_status(device_list_str) {
 	let device_status_table = document.querySelector('#device_status')
-	if (!header_tr)
+	if (!device_status_table)
 	{
 		console.log("device_status_header not found!")
 		return

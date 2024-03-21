@@ -1,0 +1,23 @@
+<canvas id="canvas" width=600 height=600></canvas>
+<div style="display:none;">
+  <img id="source" src="https://20704274-eaff-48a4-b60a-3458d3f6d6cf.mdnplay.dev/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage/rhino.jpg" width="300" height="227" />
+</div>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+ctx.width = 500;
+ctx.height = 500;
+const image = document.getElementById("source");
+
+image.addEventListener("load", (e) => {
+  let index = 0;
+  for ( ; index < 13 ; index ++) {
+    ctx.save();
+    ctx.translate(300, 300);
+    ctx.rotate(Math.PI * 2 / 12 * index);
+    ctx.drawImage(image, -150, 0);
+    ctx.restore();
+  }
+});
+</script>

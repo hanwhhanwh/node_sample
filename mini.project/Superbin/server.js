@@ -33,8 +33,8 @@ function fetch_device_status(device_id)
 		let options = {
 			headers: {'Content-Type': 'application/json'
 				, 'User-Agent': 'Mozilla/5.0 (Linux; Android 12; M2012K11AG Build/SKQ1.211006.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/106.0.5249.126 Mobile Safari/537.36 Superbin-Mobile'
-				, 'Origin': 'https://userapp.superbin.co.kr'
-				, 'Referer': 'https://userapp.superbin.co.kr/'
+				, 'Origin': 'http://userapp.superbin.co.kr'
+				, 'Referer': 'http://userapp.superbin.co.kr/'
 				, 'X-Client-Build': '101'
 				, 'X-Client-Version': '0.1.1'
 				, 'X-Requested-With': 'com.superbin'
@@ -64,22 +64,21 @@ function fetch_device_status(device_id)
 	});
 }
 
-app.route('/new')
+app.route('/')
     .get(function (req, res) {
-		let device_list = fs.readFileSync(process.cwd() + '/device_list.txt')
-		device_list = (device_list[device_list.length - 1] === 10) ? device_list.slice(0, -1).toString() : device_list.toString()
+		let device_list = fs.readFileSync(process.cwd() + '/device_list.txt').toString()
         res.render('status', {
             device_list_str: device_list
         });
     });
 
 
-app.get('/', async function(req, res) {
+app.get('/old', async function(req, res) {
 	let device_list = fs.readFileSync(process.cwd() + '/device_list.txt').toString().split(',');
 	let device_status_list = {};
 	let device_list_html = '<tr><th>위치</th><th>수량</th><th>상태</th><th>마지막 갱신일</th></tr>\n';
 	let device_status = null;
-	for (let device_id of device_list)
+	for (device_id of device_list)
 	{
 		let storage_type, storage_count, storage_status = '';
 		try
@@ -168,12 +167,13 @@ app.post('/youtube_dl', async function(req, res) {
 })
 
 
-// add static folder : ./public 
-app.use(express.static('public'))
-
 let device_list = fs.readFileSync(process.cwd() + '/device_list.txt').toString()
 console.log(device_list)
 console.log('device_list')
+
+// add static folder : ./public 
+app.use(express.static('public'))
+
 
 // express start
 app.listen(port, function() {
